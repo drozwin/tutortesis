@@ -23,7 +23,7 @@ export async function apiClient<T>(
   }
 
   const res = await fetch(
-    `https://katina-beadflush-unacquisitively.ngrok-free.dev/api"${endpoint}`,
+    `https://katina-beadflush-unacquisitively.ngrok-free.dev/api${endpoint}`,
     {
       headers,
       ...options,
