@@ -15,17 +15,20 @@ export async function apiClient<T>(
     "Content-Type": "application/json",
     Accept: "application/json",
     "x-web-id": webId ?? "?", // fallback si webId es null
-    'ngrok-skip-browser-warning': '69420', //obligatorio si es ngrock
+    "ngrok-skip-browser-warning": "69420", //obligatorio si es ngrock
   };
 
   if (auth) {
     headers["Authorization"] = `Bearer ${auth}`;
   }
 
-  const res = await fetch(`${API_URL}${endpoint}`, {
-    headers,
-    ...options,
-  });
+  const res = await fetch(
+    `https://katina-beadflush-unacquisitively.ngrok-free.dev/api"${endpoint}`,
+    {
+      headers,
+      ...options,
+    },
+  );
 
   let data: any = null;
   try {
