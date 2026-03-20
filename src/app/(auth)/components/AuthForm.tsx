@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { login } from "@/services/authService";
 import { persistAuthToken } from "@/persist/AuthPersistence";
 import { useAuth } from "@/context/AuthContext";
+import { initAudio } from "@/lib/audio";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -25,7 +26,6 @@ export default function LoginForm() {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-
     try {
       const response = await login({ email, password });
 

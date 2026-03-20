@@ -1,31 +1,43 @@
 "use client";
+
 import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/lib/persistGlobalQueryClient"
+import { queryClient } from "@/lib/persistGlobalQueryClient";
 import { useEffect } from "react";
 import { ThemeProvider } from "./theme-provider";
 import { getPersistentId } from "@/persist/persistentId";
-/* import PersistTokenAuth from './PersistTokenAuth' */
-// import { GoogleOAuthProvider } from "@react-oauth/google";
+import { initPushSoundListener } from "@/lib/pushListener";
+import PushManager from "./PushManager";
 import { AuthProvider } from "@/context/AuthContext";
+import { initAudio } from "@/lib/audio";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
+  // 🔹 ID persistente
   useEffect(() => {
     const id = getPersistentId();
     console.log("web_id:", id);
   }, []);
+  useEffect(() => {
+    initPushSoundListener();
+  }, []);
+  // 🔹 Audio
+  useEffect(() => {
+    initAudio();
+  }, []);
+
   return (
     <ThemeProvider
-      attribute="class" // aplica clase "dark" al <html>
-      enableSystem // habilita detectar el tema del sistema
+      attribute="class"
+      enableSystem
       storageKey="theme"
       disableTransitionOnChange
     >
-      {/* <PersistTokenAuth /> */}
-      {/* <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}> */}
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {" "}
+          <PushManager />
+          {children}
+        </AuthProvider>
       </QueryClientProvider>
-      {/* </GoogleOAuthProvider> */}
     </ThemeProvider>
   );
 }

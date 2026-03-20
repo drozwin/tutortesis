@@ -15,3 +15,9 @@ export async function logout() {
     method: "POST",
   });
 }
+
+export function getUsers() {
+  return apiClient<any[]>("/users", {
+    method: "GET",
+  });
+}

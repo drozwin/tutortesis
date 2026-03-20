@@ -1,8 +1,8 @@
 import { getPersistentId } from "../persist/persistentId";
 import { getAuthToken } from "../persist/AuthPersistence";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
+// const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = "https://katina-beadflush-unacquisitively.ngrok-free.dev/api"
 export async function apiClient<T>(
   endpoint: string,
   options?: RequestInit,
@@ -14,21 +14,18 @@ export async function apiClient<T>(
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     Accept: "application/json",
-    "x-web-id": webId ?? "?", // fallback si webId es null
-    "ngrok-skip-browser-warning": "69420", //obligatorio si es ngrock
+    "x-web-id": webId ?? "?",
+    "ngrok-skip-browser-warning": "69420",
   };
 
   if (auth) {
     headers["Authorization"] = `Bearer ${auth}`;
   }
 
-  const res = await fetch(
-    `https://katina-beadflush-unacquisitively.ngrok-free.dev/api${endpoint}`,
-    {
-      headers,
-      ...options,
-    },
-  );
+  const res = await fetch(`${API_URL}${endpoint}`, {
+    headers,
+    ...options,
+  });
 
   let data: any = null;
   try {
@@ -38,8 +35,12 @@ export async function apiClient<T>(
   }
 
   if (!res.ok) {
-    // Retornamos los datos del backend aunque sea error
-    throw { status: res.status, data };
+    const errorFormatted = new Error(data?.message || "Error en la petición");
+    // @ts-ignore - Agregamos info extra al objeto Error
+    errorFormatted.status = res.status;
+    // @ts-ignore
+    errorFormatted.data = data;
+    throw errorFormatted;
   }
 
   return data;

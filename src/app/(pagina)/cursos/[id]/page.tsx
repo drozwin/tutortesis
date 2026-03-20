@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { useProductDetail } from "@/hooks/useProductDetail";
+import { useProductDetail } from "@/hooks/useProducts";
 import { useAddCart } from "@/hooks/useCart";
 
 export default function ProductDetailPage() {
