@@ -1,9 +1,13 @@
-import React from 'react'
+"use client";
+import React from "react";
+import  PublicStore from "./PublicStore";
 
 const Cursos = () => {
   return (
-    <div>Cursos</div>
-  )
-}
+    <div>
+      <PublicStore />
+    </div>
+  );
+};
 
-export default Cursos
+export default Cursos;

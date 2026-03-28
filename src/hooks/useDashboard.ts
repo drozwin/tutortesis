@@ -5,12 +5,15 @@ import { useAuth } from "@/context/AuthContext";
 export function useDashboard() {
   const { user } = useAuth();
   return useQuery({
-    queryKey: ["dashboard", user?.id], 
+    queryKey: ["dashboard", user?.id],
     queryFn: getDashboard,
-    enabled: !!user, // solo si hay usuario
-
-    staleTime: 1000 * 60 * 30, // 30 min
-    gcTime: 1000 * 60 * 60, // 1 hora
-    refetchOnWindowFocus: false,
+    enabled: !!user,
+  
+    staleTime: 1000 * 60 * 60 * 24,
+    gcTime: 1000 * 60 * 60 * 24,
+  
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
   });
 }

@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { useChatUsers } from "./useChatUsers";
 import { getEcho } from "@/lib/pusher";
-import { getAuthToken } from "@/persist/AuthPersistence";
-import { getPersistentId } from "@/persist/persistentId";
 import { useAuth } from "@/context/AuthContext";
 import { apiClient } from "@/lib/fetch";
 
@@ -19,10 +17,7 @@ export function useChat() {
     if (!user?.id) return;
 
     const init = async () => {
-      const token = await getAuthToken();
-      const webId = await getPersistentId();
-
-      const echo = getEcho(token, webId);
+      const echo = getEcho();
 
       echo
         ?.private(`user.chat.${user.id}`)

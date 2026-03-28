@@ -9,7 +9,6 @@ export function useAddCart() {
     mutationFn: addCartItem,
 
     onSuccess: () => {
-      // refresca carrito del header
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });

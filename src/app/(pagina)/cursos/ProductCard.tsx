@@ -12,18 +12,53 @@ import Link from "next/link";
 import { ProductResponse } from "@/types/productDetail";
 
 export const ProductCard = ({ product }: { product: ProductResponse }) => {
-  const price = product.discount_price ?? product.price ?? "Gratis";
+  const originalPrice = Number(product.price) || 0;
+  const discountPercentage = Number(product.discount_percentage) || 0;
+  const discountAmount = (originalPrice * discountPercentage) / 100;
+  const finalPrice = Math.max(originalPrice - discountAmount, 0);
 
+  const formatPrice = (value: number) =>
+    new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
+
+  const getYouTubeId = (url?: string) => {
+    if (!url) return null;
+    try {
+      const urlObj = new URL(url);
+      if (urlObj.hostname === "youtu.be") return urlObj.pathname.slice(1);
+      if (urlObj.hostname.includes("youtube.com"))
+        return urlObj.searchParams.get("v");
+      return null;
+    } catch {
+      return null;
+    }
+  };
+  const youtubeId = getYouTubeId(product.video_preview_url);
   return (
-    <div className="rounded-2xl shadow-lg shadow-black/40 overflow-hidden">
+    <div className="cardBG border border-zinc-500/15  shadow-md shadow-black/30 rounded-2xl overflow-hidden">
       {/* Imagen */}
       <Link href={`/cursos/${product.slug}`}>
         <div className="relative overflow-hidden group rounded-2xl">
           {/* imagen real */}
-          <img
-            src={product.thumbnail}
-            className="relative w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-          />
+          {youtubeId ? (
+            <iframe
+              width="100%"
+              height="200"
+              src={`https://www.youtube.com/embed/${youtubeId}`}
+              title={product.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="rounded-t-lg"
+            />
+          ) : (
+            <div className="h-48 dark:bg-gray-800 bg-slate-100 flex items-center justify-center text-gray-400">
+              Sin vista previa
+            </div>
+          )}
 
           {/* badge */}
           <div className="absolute top-3 left-3">
@@ -49,22 +84,26 @@ export const ProductCard = ({ product }: { product: ProductResponse }) => {
           <div className="flex flex-col gap-2 border-slate-500">
             <div className="flex gap-1 items-center justify-between">
               <div>
-                <div className="text-2xl font-black">{price > 0 ? `Bs. ${(price)}` :"Gratis"}</div>
-                <div className="line-through text-slate-500">
-                  
-                  {product.price == price ? "" : <div>Bs {product.price}</div>}
+                <div className="text-2xl font-black">
+                  {finalPrice > 0 ? formatPrice(finalPrice) : "Gratis"}
                 </div>
-              </div>
-              <div className="flex gap-3 justify-center items-center">
-                {product.price == price ? (
-                  ""
-                ) : (
-                  <div className="bg-red-600 p-2">
-                    -{product.discount_percentage}%
+                {discountAmount > 0 && (
+                  <div className="text-slate-500 text-sm">
+                    <div className="line-through">{formatPrice(originalPrice)}</div>
+                  
                   </div>
                 )}
+              </div>
+              <div className="flex gap-3 justify-center items-center">
+                {discountPercentage > 0 ? (
+                  <div className="bg-red-600 text-white p-2 rounded-md italic">
+                    -{discountPercentage}%
+                  </div>
+                ) : (
+                  ""
+                )}
 
-                <div className="bg-green-600 p-2">
+                <div className="border border-green-500 p-2 rounded-md">
                   <ShoppingCart />
                 </div>
               </div>

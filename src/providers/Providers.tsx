@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/persistGlobalQueryClient";
 import { useEffect } from "react";
 import { ThemeProvider } from "./theme-provider";
-import { getPersistentId } from "@/persist/persistentId";
+
 import { initPushSoundListener } from "@/lib/pushListener";
 import PushManager from "./PushManager";
 import { AuthProvider } from "@/context/AuthContext";
@@ -12,10 +12,7 @@ import { initAudio } from "@/lib/audio";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   // 🔹 ID persistente
-  useEffect(() => {
-    const id = getPersistentId();
-    console.log("web_id:", id);
-  }, []);
+  
   useEffect(() => {
     initPushSoundListener();
   }, []);

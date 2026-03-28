@@ -10,10 +10,12 @@ export type Course = {
   duration: number | null
   has_certificate: boolean
   is_free: boolean
-  price: number | null
-  discount_percent: number | null
+  price: number
+  discount_percent: number
   students_count: number
   is_enrolled: boolean
+  max_students: number
+  has_coupon: boolean
 }
 
 export interface OrderResponse {

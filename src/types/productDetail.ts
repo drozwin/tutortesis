@@ -10,7 +10,7 @@ export interface ProductResponse {
   description: string
   slug: string
   thumbnail: string
-
+  video_preview_url: string
   price: number
   discount_price: number | null
   discount_percentage: number

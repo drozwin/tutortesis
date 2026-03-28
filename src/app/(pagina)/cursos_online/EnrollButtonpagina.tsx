@@ -40,7 +40,7 @@ export default function EnrollButton({ course }: { course: any }) {
   return (
     <button
       onClick={() => router.push(`/cursos_online/${course.id}`)}
-      className="px-6 py-2 cursor-pointer bg-green-600 text-white font-bold uppercase"
+      className="px-6 py-2 rounded-md cursor-pointer bg-green-600 text-white font-bold uppercase"
     >
       Inscribirme
     </button>

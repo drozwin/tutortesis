@@ -11,16 +11,20 @@ import {
 import { useRouter, usePathname } from "next/navigation";
 
 import { AuthLoaderPro } from "../components/Loader";
-import { getAuthToken, clearAuthTokens } from "../persist/AuthPersistence";
 import { apiClient } from "../lib/fetch";
 
 const PROTECTED_PATHS = ["/verificar-cuenta", "/account-banned", "/dashboard"];
+
+export type RefreshUserResult = {
+  user: any | null;
+  error: string | null;
+};
 
 type AuthContextType = {
   user: any | null;
   loading: boolean;
   error: string | null;
-  refreshUser: () => Promise<void>;
+  refreshUser: () => Promise<RefreshUserResult>;
   logoutFront: () => void;
 };
 
@@ -36,48 +40,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   // 🔹 Función principal de refresco de usuario
-  async function refreshUser() {
-    const token = await getAuthToken();
-    if (!token) {
-      setUser(null);
-      setError("no_auth");
-      setAuthChecked(true);
-      setLoading(false);
-      return;
-    }
-
+  async function refreshUser(): Promise<RefreshUserResult> {
     setLoading(true);
+
+    let nextUser: any | null = null;
+    let nextError: string | null = null;
+
     try {
+      console.log("📡 Llamando /me...");
       const userResponse = await apiClient<any>("/me");
 
+      console.log("✅ Usuario recibido:", userResponse);
+
+      nextUser = userResponse;
       setUser(userResponse);
       setError(null);
     } catch (err: any) {
-      const status = err?.response?.status;
-      const backendStatus = err?.response?.data?.status;
+      console.log("🔐 Auth error:", err);
 
-      if (status === 401) setError("no_auth");
+      const status = err?.status;
+      const backendStatus = err?.data?.status;
+
+      if (status === 401) nextError = "no_auth";
       else if (status === 403) {
-        if (backendStatus === "banned") setError("banned");
-        else if (backendStatus === "unverified")
-          setError("unverified"); // ← aquí
-        else setError("no_auth");
+        if (backendStatus === "banned") nextError = "banned";
+        else if (backendStatus === "unverified") nextError = "unverified";
+        else nextError = "no_auth";
       } else {
-        setError("no_auth");
+        nextError = "no_auth";
       }
 
+      setError(nextError);
+      nextUser = null;
       setUser(null);
-      if (!status) clearAuthTokens();
     } finally {
       setLoading(false);
       setAuthChecked(true);
     }
+
+    return { user: nextUser, error: nextError };
   }
 
   // 🔹 Logout
   // context/AuthContext.tsx
   function logoutFront() {
-    clearAuthTokens();
     setUser(null);
     setError(null);
   }
@@ -90,7 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // 🔹 Manejo de rutas protegidas y redirecciones
   useEffect(() => {
-    if (!authChecked) return;
+    if (!authChecked || loading) return;
 
     const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
 
@@ -99,7 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    if (error === "unverified") {
+    if (error === "unverified" && pathname !== "/verificar-cuenta") {
       const params = new URLSearchParams(window.location.search);
       const redirect = params.get("redirect");
 
@@ -114,7 +120,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Si usuario válido y está en rutas que no debería (login, register, verificar-cuenta), redirigir a dashboard
     if (
       user &&
-      !error &&
+      !error && //
       ["/login", "/register", "/verificar-cuenta", "/account-banned"].includes(
         pathname,
       )
@@ -124,9 +130,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       router.replace(redirect || "/dashboard");
     }
-  }, [user, authChecked, pathname, error]);
+  }, [user, authChecked, pathname, error, loading]);
 
-  if (loading || !authChecked) return <AuthLoaderPro />;
+  // Solo bloquear la app hasta el primer /me; refrescos posteriores no desmontan las pantallas.
+  if (!authChecked) return <AuthLoaderPro />;
 
   return (
     <AuthContext.Provider

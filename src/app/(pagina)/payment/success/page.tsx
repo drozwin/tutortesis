@@ -22,7 +22,7 @@ export default function PaymentSuccess() {
         setStatus("success");
         // Redirigir después de 2 segundos para que el usuario vea el éxito
         setTimeout(() => {
-          router.push("/dashboard/mis-cursos"); 
+          router.push("/dashboard"); 
         }, 2500);
       })
       .catch((err) => {

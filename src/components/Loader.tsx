@@ -42,7 +42,7 @@ export function AuthLoaderPro() {
           }}
           className="mb-2 text-3xl font-bold tracking-tighter text-gray-900 dark:text-white sm:text-4xl"
         >
-          D<span className="text-blue-600">W</span>
+          T<span className="text-red-600">T</span>
         </motion.h1>
 
         {/* ⏳ SUBTEXTO - Verificando */}
@@ -51,7 +51,7 @@ export function AuthLoaderPro() {
           animate={entryAnimation.animate}
           className="mb-8 text-[10px] font-medium tracking-[0.4em] text-gray-400 dark:text-zinc-500 uppercase"
         >
-          Iniciando sistema
+          Cargando...
         </motion.p>
 
         {/* 🔁 BARRA DE CARGA - Minimalista y rápida */}
@@ -62,7 +62,7 @@ export function AuthLoaderPro() {
           className="h-[1px] w-32 bg-gray-200 dark:bg-zinc-800 rounded-full overflow-hidden relative"
         >
           <motion.div
-            className="absolute h-full bg-blue-600"
+            className="absolute h-full bg-red-600"
             initial={{ left: "-100%" }}
             animate={{ left: "100%" }}
             transition={{

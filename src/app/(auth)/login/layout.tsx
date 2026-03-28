@@ -1,6 +1,5 @@
 "use client"
 
-import AuthForm from "@/app/(auth)/components/AuthForm"
 import { useAuth } from "@/context/AuthContext"
 
 export default function LoginPage({ children }: { children: React.ReactNode }) {

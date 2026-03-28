@@ -16,3 +16,18 @@ export interface LogoutResponse {
   message: string
   deleted: number
 }
+
+export interface RegisterPayload {
+  username: string;
+  name: string;
+  apellidos: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
+export interface RegisterResponse {
+  message: string;
+  token: string;
+  expires_in: number;
+}

@@ -26,7 +26,7 @@ export const Navbar = () => {
   };
 
   return (
-    <div className="w-full fixed top-5 left-0  z-50 ">
+    <div className="w-full fixed top-4 left-0 px-4 xl:px-0  z-50 ">
       <motion.nav
         className=" max-w-7xl bg-slate-200/45 dark:bg-black/30 mx-auto  w-full backdrop-blur-md px-1 rounded-full"
         initial={{ y: -100, opacity: 0 }}
@@ -35,9 +35,9 @@ export const Navbar = () => {
       >
         {/* bloque 1 */}
         <div className="mx-auto flex items-center justify-between">
-          <div className="text-lg font-bold flex items-center gap-2">
+          <div className="text-lg font-bold flex items-center">
             <Link href={"/"} className="flex items-center gap-2">
-              <div className="p-1">
+              <div className="py-1">
                 <img
                   src={"/logo.png"}
                   alt="TutorTesis Logo"
@@ -55,10 +55,10 @@ export const Navbar = () => {
                   <div key={i} className=" ">
                     <a
                       href={item.href}
-                      className="hover:bg-black/50 hover:animate-pulse rounded border-b border-b-red-700 flex bg-linear-to-t from-white/75 dark:from-black/20 to-transparent flex-col items-center px-3 py-1 hover:text-red-600"
+                      className="hover:bg-black/50 hover:animate-pulse rounded flex bg-linear-to-t flex-col items-center px-3 py-1 hover:text-red-600"
                     >
                       {renderIcon(item.icon)}
-                      <span className="text-sm ">{item.label}</span>
+                      <span className="text-xs ">{item.label}</span>
                     </a>
                   </div>
                 ))}
@@ -73,7 +73,7 @@ export const Navbar = () => {
             </div>
             <Link
               href={"/login"}
-              className="bg-red-600 cursor-pointer hover:bg-red-700 text-white px-4 py-2 text-xs font-bold uppercase tracking-tighter rounded-sm transition-all transform hover:skew-x-[-10deg]"
+              className="bg-red-600 cursor-pointer hover:bg-red-700 text-white px-4 py-2 text-xs font-bold uppercase tracking-tighter rounded-sm transition-all transform"
             >
               Mi Cuenta
             </Link>

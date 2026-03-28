@@ -1,32 +1,43 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Sun, Moon } from "lucide-react";
 
 export function ModeToggle() {
   const { theme, setTheme, systemTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // Para evitar "hydration mismatch"
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+  useEffect(() => setMounted(true), []);
   if (!mounted) return null;
 
   const currentTheme = theme === "system" ? systemTheme : theme;
+  const isDark = currentTheme === "dark";
+
+  const toggleTheme = () => {
+    setTheme(isDark ? "light" : "dark");
+  };
 
   return (
     <button
-      onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
-      className="p-1 bg-zinc-50 dark:bg-zinc-900 mr-2 rounded-full hover:bg-gray-100/50 dark:hover:bg-gray-800 transition"
+      onClick={toggleTheme}
+      className="relative w-16 h-8 rounded-full transition-colors duration-300 
+      bg-sky-400 dark:bg-slate-800 flex items-center px-1"
     >
-      {currentTheme === "dark" ? (
-        <Sun className="h-5 w-5 text-yellow-500" />
-      ) : (
-        <Moon className="h-5 w-5 text-gray-800 dark:text-gray-200" />
-      )}
+      <Moon
+        className={`absolute left-1 w-5 h-5 transition-all duration-500
+        ${isDark ? "opacity-100 rotate-0" : "opacity-0 -rotate-45"}`}
+      />
+
+      <Sun
+        className={`absolute right-1 w-5 h-5 text-yellow-300 transition-all duration-500 animate-spin-slow
+        ${!isDark ? "opacity-100 rotate-0" : "opacity-0 rotate-45"}`}
+      />
+
+      <span
+        className={`absolute top-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform duration-300
+        ${isDark ? "translate-x-8" : "translate-x-0"}`}
+      />
     </button>
   );
 }

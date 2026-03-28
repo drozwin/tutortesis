@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210.25238mm"
+   height="68.616142mm"
+   viewBox="0 0 210.25238 68.616142"
+   version="1.1"
+   id="svg1"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm">
+    <inkscape:page
+       x="0"
+       y="3.9810073e-37"
+       width="210.25238"
+       height="68.616142"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient1726"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#730800;stop-opacity:1;"
+         offset="0"
+         id="stop1734" />
+      <stop
+         style="stop-color:#b40a00;stop-opacity:1;"
+         offset="1"
+         id="stop1735" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1726"
+       id="linearGradient1735"
+       x1="195.11076"
+       y1="330.49442"
+       x2="14.88926"
+       y2="222.20642"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,-8.3275623)" />
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0.1261975,-228.7703)">
+    <path
+       style="fill:#a40b00;fill-opacity:1;fill-rule:evenodd;stroke:#a70c00;stroke-width:0.252395;stroke-opacity:1"
+       d="M 210,229.94848 133.55899,252.45747 53.847684,228.90237 0,246.3073 v 41.06396 h 210 z"
+       id="path7"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="path7.svg"
+       inkscape:export-xdpi="100"
+       inkscape:export-ydpi="100" />
+    <path
+       style="fill:url(#linearGradient1735);fill-opacity:1;fill-rule:evenodd;stroke:#a70c00;stroke-width:0.252395;stroke-opacity:1"
+       d="M 210,239.83746 133.55899,262.34645 53.847684,238.79135 0,256.19628 v 41.06396 h 210 z"
+       id="path1726"
+       sodipodi:nodetypes="ccccccc" />
+  </g>
+</svg>

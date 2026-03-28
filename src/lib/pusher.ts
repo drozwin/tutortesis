@@ -9,39 +9,43 @@ declare global {
     Pusher: typeof Pusher;
   }
 }
-
-export {};
-export function getEcho(token: string, webId: string) {
+// "ngrok-skip-browser-warning": "69420",
+// export {};
+/** Sesión vía cookie HttpOnly: no Bearer; el navegador envía la cookie al authEndpoint (mismo sitio/CORS con credentials). */
+export function getEcho() {
   if (typeof window === "undefined") return null;
 
-  // Si ya existe una instancia, la desconectamos para aplicar los nuevos headers
   if (echoInstance) {
-    echoInstance.disconnect();
+    return echoInstance; 
   }
 
   window.Pusher = Pusher;
+
+  // 👇 FORZAR COOKIES
+  (Pusher.Runtime.createXHR as any) = function () {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    return xhr;
+  };
 
   echoInstance = new Echo({
     broadcaster: "pusher",
     key: process.env.NEXT_PUBLIC_PUSHER_KEY!,
     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
     forceTLS: true,
-    autoConnect: false, // <--- DETENEMOS LA CONEXIÓN AUTOMÁTICA
-    authEndpoint:
-      "https://katina-beadflush-unacquisitively.ngrok-free.dev/api/broadcasting/auth",
+    autoConnect: false,
+
+    authEndpoint: "http://localhost:8000/api/broadcasting/auth",
+
     auth: {
       headers: {
-        Authorization: `Bearer ${token}`,
-        "x-web-id": webId,
         Accept: "application/json",
-        "ngrok-skip-browser-warning": "69420",
       },
     },
+
+    withCredentials: true,
   });
 
-  console.log(
-    "🔄 Echo (Re)inicializado con token:",
-    token.substring(0, 15) + "...",
-  );
+  console.log("🔄 Echo inicializado");
   return echoInstance;
 }

@@ -4,6 +4,7 @@ import {
   getCourse,
   cancelEnroll,
   enrollCourse,
+  CreateCourse,
 } from "@/services/liveCoursesService";
 import { Course } from "@/types/liveCursos";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,6 +15,19 @@ export function useCourses() {
     queryFn: getCourses,
   });
 }
+export function useCreateCourse() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: CreateCourse,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["courses"] });
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+}
+
 export function useCourse(courseId: number) {
   return useQuery({
     queryKey: ["course", courseId],
